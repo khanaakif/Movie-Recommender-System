@@ -65,6 +65,8 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+from streamlit.components.v1 import components
+
 
 def fetch_poster(movie_id):
     response = requests.get(
@@ -106,7 +108,43 @@ selected_movie_name = st.selectbox(
     'Select a movie:',
     movies['title'].values)
 
-if st.button('Recommend'):
+def main():
+
+    imageCarouselComponent = components.declare_component("image-carousel-component", path="frontend/public")
+
+    imageUrls = [
+        fetch_poster(299536),
+        fetch_poster(233),
+        fetch_poster(101),
+        fetch_poster(2830),
+        fetch_poster(17455),
+        fetch_poster(429422),
+        fetch_poster(13972),
+        fetch_poster(2),
+        fetch_poster(22),
+        fetch_poster(144),
+        fetch_poster(44801),
+        fetch_poster(340),
+        fetch_poster(163),
+        fetch_poster(290),
+        fetch_poster(9722),
+        fetch_poster(914),
+        fetch_poster(155),
+        fetch_poster(255709),
+        fetch_poster(572154),
+        fetch_poster(156),
+        fetch_poster(100),
+    ]
+    selectedImageUrl = imageCarouselComponent(imageUrls=imageUrls, height=200)
+
+    if selectedImageUrl is not None:
+        st.image(selectedImageUrl)
+
+if __name__ == "__main__":
+    main()
+
+
+if st.button('Show Recommend'):
     names, posters = recommend(selected_movie_name)
 
     col1, col2, col3, col4, col5 = st.columns(5)
